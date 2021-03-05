@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p0 = new vec2(128.0, 128.0);
+			let p1 = new vec2(256.0, 384.0);
+			let p2 = new vec2(384.0, 256.0);
+
+			make_draggable_point(demo.drag_control, p0);
+			make_draggable_point(demo.drag_control, p1);
+			make_draggable_point(demo.drag_control, p2);
+
+			demo.on_draw.push((c) =>
+			{
+				const arw = new arrow2( p1, p0);
+				const arw1 = new arrow2( p1, p2);
+				const arw2 = new arrow2( p2, p0);
+
+				let red_style = default_style.copy();
+				red_style.stroke_style = '#FF0000';
+				red_style.fill_style = '#FF0000';
+
+				arrow2.draw(c, arw2, red_style);
+
+				arrow2.draw(c, arw, default_style);
+				arrow2.draw(c, arw1, default_style);
+
+				const m0 = vec2.add(vec2.midpoint(p0, p1), new vec2(-16.0, 16.0));
+				const m1 = vec2.add(vec2.midpoint(p1, p2), new vec2(16.0, 16.0));
+				const m2 = vec2.add(vec2.midpoint(p0, p2), new vec2(16.0, -16.0));
+
+				c.font = "16px sans-serif";
+				c.fillText('a', m0.x, m0.y);
+				c.fillText('b', m1.x, m1.y);
+				c.fillText('a - b', m2.x, m2.y);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Vector subtraction </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+	</body>
+</html>

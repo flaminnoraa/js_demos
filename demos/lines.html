@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p = new vec2(256.0, 128.0);
+			let p1 = new vec2(192.0, 192.0);
+
+			demo.drag_control.draggables.push(new draggable((pos) => { }, (pos) => { },
+				(pos) => { p = pos.copy(); }, new circle_hit_shape(p, 6.0)));
+
+			demo.drag_control.draggables.push(new draggable((pos) => { }, (pos) => { },
+			 (pos) => { p1 = pos.copy(); }, new circle_hit_shape(p1, 6.0)));
+
+			demo.on_draw.push((c, frozen) =>
+			{
+				const v = vec2.sub(p, p1);
+
+				const l0 = new line2(p1, v);
+
+				const arw = new arrow2(p1, p);
+
+				const po0 = new point2(p);
+
+				let red_style = default_style.copy();
+				red_style.stroke_style = "#FF0000";
+				red_style.fill_style = "#FF0000";
+				red_style.line_width = 1.0;
+
+				line2.draw(c, l0, -512.0, 512.0, red_style);
+				arrow2.draw(c, arw, default_style);
+
+				c.font = "16px sans-serif";
+				c.fillText('p', p1.x + 8.0, p1.y - 8.0);
+				c.fillText('p + tv', p.x + 8.0, p.y - 8.0);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Vector projection </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+
+	</body>
+</html>

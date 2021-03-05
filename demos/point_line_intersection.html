@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p = new vec2(256.0, 128.0);
+			let p1 = new vec2(192.0, 192.0);
+			let p2 = new vec2(256.0, 256.0);
+
+			make_draggable_point(demo.drag_control, p);
+			make_draggable_point(demo.drag_control, p1);
+			make_draggable_point(demo.drag_control, p2);
+
+			demo.on_draw.push((c, frozen) =>
+			{
+				const v = vec2.sub(p, p1);
+
+				const l0 = new line2(p1, v);
+				
+				const v1 = vec2.project(vec2.sub(p2, p1), vec2.normalize(v));
+				const p3 = vec2.add(p1, v1);
+
+				const po0 = new point2(p);
+
+				const pt0 = new point2(p);
+				const pt1 = new point2(p1);
+				const pt2 = new point2(p2);
+
+				const ls0 = new line_seg2(p2, p3);
+
+				let red_style = default_style.copy();
+				red_style.stroke_style = "#FF0000";
+				red_style.fill_style = "#FF0000";
+				red_style.line_width = 1.0;
+
+				line2.draw(c, l0, -512.0, 512.0, red_style);
+
+				let dashed_style = default_style.copy();
+				dashed_style.line_dash = [5.0];
+				line_seg2.draw(c, ls0, dashed_style);
+
+				if(!frozen)
+				{
+					point2.draw(c, pt0, default_style);
+					point2.draw(c, pt1, default_style);
+				}
+
+				point2.draw(c, pt2, default_style);
+
+				c.font = "16px sans-serif";
+				c.fillText('p', p2.x + 8.0, p2.y - 8.0);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Point line intersection </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p0 = new vec2(128.0, 384.0);
+			let p1 = new vec2(384.0, 128.0);
+			make_draggable_point(demo.drag_control, p0);
+			make_draggable_point(demo.drag_control, p1);
+
+			demo.on_draw.push((c) =>
+			{
+				const d = vec2.sub(p1, p0);
+				const corner = vec2.add(p0, new vec2(d.x, 0.0));
+				const tri = new right_triangle2(p0, new vec2(1.0, 0.0), d.x, d.y);
+				const arw = new arrow2(p0, p1);
+
+				right_triangle2.draw(c, tri, default_style);
+				arrow2.draw(c, arw, default_style);
+
+				const m0 = vec2.add(vec2.midpoint(p0, p1), new vec2(-16.0, 16.0));
+				const m1 = vec2.midpoint(p1, corner);
+				const m2 = vec2.midpoint(p0, corner);
+
+				c.font = "16px sans-serif";
+				c.fillText('a', m0.x - 16.0, m0.y - 16.0);
+				c.fillText('a.x', m1.x + 8.0, m1.y);
+				c.fillText('a.y', m2.x, m2.y + 16.0);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Vector magnitude </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+	</body>
+</html>

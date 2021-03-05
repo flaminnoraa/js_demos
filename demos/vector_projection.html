@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p0 = new vec2(128.0, 256.0);
+			let p1 = new vec2(384.0, 384.0);
+			let p2 = new vec2(384.0, 256.0);
+
+			make_draggable_point(demo.drag_control, p0);
+			make_draggable_point(demo.drag_control, p1);
+			make_draggable_point(demo.drag_control, p2);
+
+			demo.on_draw.push((c) =>
+			{
+
+				const v0 = vec2.sub(p1, p0);
+				const v1 = vec2.sub(p2, p0);
+
+				const vp = vec2.project(v1, vec2.normalize(v0));
+
+				const tri0 = new right_triangle2(p0,
+						vec2.normalize(v0),
+						vec2.length(vp),
+						-vec2.length(vec2.sub(v1, vp)));
+						
+				const l0 = new line_seg2(p0, p2);
+				const l1 = new line_seg2(vp, p2);
+
+				const arw = new arrow2(p0, p1);
+				const arw2 = new arrow2(p0, vec2.add(vp, p0));
+				const point0 = new point2(p2);
+
+				arrow2.draw(c, arw, default_style);
+				point2.draw(c, point0, default_style);
+
+				let dashed_style = default_style.copy();
+				dashed_style.line_dash = [5.0];
+
+				right_triangle2.draw(c, tri0, dashed_style);
+
+				let red_style = default_style.copy();
+				red_style.stroke_style = '#FF0000';	
+
+				arrow2.draw(c, arw2, red_style);
+
+				const m0 = vec2.midpoint(p0, vec2.add(vp, p0));
+
+				c.font = "16px sans-serif";
+				c.fillText('p', p2.x, p2.y - 16.0);
+				c.fillText('v', p1.x, p1.y + 16.0);
+				c.fillText('v(p\u00B7v)', m0.x - 16.0, m0.y + 32.0);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Vector projection </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+	</body>
+</html>

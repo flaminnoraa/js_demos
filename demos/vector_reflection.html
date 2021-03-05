@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Graphics guide demos </title>
+		<script src="common.js"></script>
+		<script>
+			let p3 = new vec2(256.0, 384.0);
+			let p4 = new vec2(256.0, 256.0);
+			let p5 = new vec2(384.0, 300.0);
+
+			make_draggable_point(demo.drag_control, p3);
+			make_draggable_point(demo.drag_control, p4);
+			make_draggable_point(demo.drag_control, p5);
+
+			demo.on_draw.push((c) =>
+			{
+				const v0 = vec2.normalize(vec2.sub(p4, p3));
+				const v1 = vec2.rotate(v0,  -Math.PI / 2.0);
+
+				let p0 = vec2.add(vec2.scale(v1, 256.0), p3);//new vec2(128.0, 256.0);
+				let p1 = vec2.add(vec2.scale(v1, -256.0), p3);
+
+				const v2 = vec2.normalize(vec2.sub(p5, p3));	
+				const v3 = vec2.reflect(v2, v0);
+				
+				const p6 = vec2.add(p3, vec2.scale(v3, vec2.length(vec2.sub(p3, p5))));
+
+				const l0 = new line_seg2(p0, p1);
+				const arw0 = new arrow2(p3, p4);
+				const arw1 = new arrow2(p3, p5);
+				const arw2 = new arrow2(p3, p6);
+
+				const ang0 = angle2.from_points(p5, p3, p4);
+				const ang1 = angle2.from_points(p4, p3, p6);
+
+				line_seg2.draw(c, l0, default_style);
+				let red_style = default_style.copy();
+				red_style.stroke_style = '#FF0000';	
+
+				arrow2.draw(c, arw0, red_style);
+
+				angle2.draw(c, ang0, default_style);
+				
+				let dashed_style = default_style.copy();
+				dashed_style.line_dash = [5.0];
+
+				arrow2.draw(c, arw1, dashed_style);
+
+				let blue_style = default_style.copy();
+				blue_style.stroke_style = '#0066FF';
+
+				let dashed_blue_style = dashed_style.copy();
+				dashed_blue_style.stroke_style = '#0066FF';
+
+				arrow2.draw(c, arw2, dashed_blue_style);
+				angle2.draw(c, ang1, blue_style);
+
+				c.font = "16px sans-serif";
+				c.fillText('a', p5.x + 8.0, p5.y + 2.0);
+				c.fillText('b', p4.x + 4.0, p4.y - 16.0);
+				c.fillText('r', p6.x - 4.0, p6.y - 8.0);
+				c.fillText(c_theta, p3.x - 4.0, p3.y - 16.0);
+				c.fillText(c_theta, p3.x + 12.0, p3.y - 8.0);
+			});
+		</script>
+	</head>
+	<body>
+		<h1> Vector projection </h1>
+		<input type="checkbox" id="freeze-check" name="freeze" checked>
+		<label for="freeze">Freeze</label>
+		<div>
+			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		</div>
+		<a href='#' id="save-button"> Save </a>&nbsp;
+		<a href='index.html'> Back </a>
+	</body>
+</html>
