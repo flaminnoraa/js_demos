@@ -1,6 +1,8 @@
 NAMES=points \
 	closest_points \
 	vectors \
+	line_intersection \
+	line_seg_intersection \
 
 all: html
 

@@ -2,42 +2,82 @@
 <html>
 	<head>
 		<title> Graphics guide demos </title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 		<script src="common.js"></script>
 		<script>
+			const doc_text = `# Points as vectors
+
+While points are not vectors, they can be represented as the vector from the **origin** of $(0, 0, 0)$ to the point.
+
+We can for convenience use point $p$ to mean the vector $(p - o)$ in equations.
+
+So they could be implemented as a struct:
+
+\`\`\` c++
+struct point
+{
+	vector p;
+};
+\`\`\`
+`;
+		</script>
+		<script>
 			let p = new vec2(384.0, 128.0);
-			let p1 = new vec2(128.0, 384.0);
+let p1 = new vec2(128.0, 384.0);
 
-			make_draggable_point(demo.drag_control, p);
+make_draggable_point(demo.drag_control, p);
 
-			demo.on_draw.push((c) =>
-			{
+demo.on_draw.push((c) =>
+		{
 
-				const arw = new arrow2(p1, p);
+		const arw = new arrow2(p1, p);
 
-				const po0 = new point2(p);
+		const po0 = new point2(p);
 
-				let red_style = default_style.copy();
-				red_style.stroke_style = "#FF0000";
-				red_style.fill_style = "#FF0000";
+		let red_style = default_style.copy();
+		red_style.stroke_style = "#FF0000";
+		red_style.fill_style = "#FF0000";
 
-				point2.draw(c, po0, red_style);
+		point2.draw(c, po0, red_style);
 
-				arrow2.draw(c, arw, default_style);
+		arrow2.draw(c, arw, default_style);
 
-				c.font = "16px sans-serif";
-				c.fillText('p', p.x + 8.0, p.y + 2.0);
-				c.fillText('(0, 0)', p1.x + 8.0, p1.y + 8.0);
-			});
+		c.font = "16px sans-serif";
+		c.fillText('p', p.x + 8.0, p.y + 2.0);
+		c.fillText('(0, 0)', p1.x + 8.0, p1.y + 8.0);
+		});
+
 		</script>
 	</head>
 	<body>
-		<h1> Vector projection </h1>
-		<input type="checkbox" id="freeze-check" name="freeze" checked>
-		<label for="freeze">Freeze</label>
-		<div>
-			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		<div id="outer" style="display:flex;">
+			<div id="demo">
+				<input type="checkbox" id="freeze-check" name="freeze" checked>
+				<label for="freeze">Freeze</label>
+				<div>
+					<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+				</div>
+				<a href='#' id="save-button"> Save </a>&nbsp;
+			</div>
+			<div id="text">
+			</div>
 		</div>
-		<a href='#' id="save-button"> Save </a>&nbsp;
 		<a href='index.html'> Back </a>
+		<script>
+			let text = document.querySelector('#text');
+			text.innerHTML = marked(doc_text);
+		</script>
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script>
+		window.MathJax = {
+		  tex: {
+		    inlineMath: [['$', '$'], ['\\(', '\\)']]
+		  }
+		};
+		</script>
 	</body>
 </html>
