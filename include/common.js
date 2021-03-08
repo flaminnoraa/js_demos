@@ -221,7 +221,7 @@ class vec3
 
 	copy()
 	{
-		return new vec3(this.x, this.y);
+		return new vec3(this.x, this.y, this.z);
 	}
 }
 
@@ -242,6 +242,22 @@ class point2
 		canv.fill();
 		canv.stroke();
 		canv.restore();
+	}
+}
+
+class point3
+{
+	p;
+	constructor(p)
+	{
+		this.p = p.copy();
+	}
+
+	static draw(canv, view, p, style)
+	{
+		const pv = view.project(p.p);
+		const p2 = new point2(pv);
+		point2.draw(canv, p2, style);
 	}
 }
 
@@ -279,7 +295,7 @@ class line3
 		this.v = v;
 	}
 
-	static draw(canv, view, start, end, style)
+	static draw(canv, view, l, start, end, style)
 	{
 		const seg = line_seg3.from_line(l, start, end);
 		line_seg3.draw(canv, view, seg, style);

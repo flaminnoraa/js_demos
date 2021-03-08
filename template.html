@@ -2,18 +2,44 @@
 <html>
 	<head>
 		<title> Graphics guide demos </title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 		<script src="common.js"></script>
 		<script>
+			const doc_text = `%TEXT%`;
+		</script>
+		<script>
+			%SCRIPT%
 		</script>
 	</head>
 	<body>
-		<h1> Template demo </h1>
-		<input type="checkbox" id="freeze-check" name="freeze" checked>
-		<label for="freeze">Freeze</label>
-		<div>
-			<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+		<div id="outer" style="display:flex;">
+			<div id="demo">
+				<input type="checkbox" id="freeze-check" name="freeze" checked>
+				<label for="freeze">Freeze</label>
+				<div>
+					<canvas id="canv" width=512 height=512> Canvas not supported </canvas>
+				</div>
+				<a href='#' id="save-button"> Save </a>&nbsp;
+			</div>
+			<div id="text">
+			</div>
 		</div>
-		<a href='#' id="save-button"> Save </a>&nbsp;
 		<a href='index.html'> Back </a>
+		<script>
+			let text = document.querySelector('#text');
+			text.innerHTML = marked(doc_text);
+		</script>
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script>
+		window.MathJax = {
+		  tex: {
+		    inlineMath: [['$', '$'], ['\\(', '\\)']]
+		  }
+		};
+		</script>
 	</body>
 </html>
